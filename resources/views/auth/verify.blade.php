@@ -1,24 +1,23 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+  <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Verify Your Email Address') }}</div>
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header">验证 E-Mail 地址</div>
 
-                <div class="card-body">
-                    @if (session('resent'))
-                        <div class="alert alert-success" role="alert">
-                            {{ __('A fresh verification link has been sent to your email address.') }}
-                        </div>
-                    @endif
+          <div class="card-body">
+            @if (session('resent'))
+              <div class="alert alert-success" role="alert">
+                一封含有验证链接的邮件已经发送到你的 E-Mail
+              </div>
+            @endif
 
-                    {{ __('Before proceeding, please check your email for a verification link.') }}
-                    {{ __('If you did not receive the email') }}, <a href="{{ route('verification.resend') }}">{{ __('click here to request another') }}</a>.
-                </div>
-            </div>
+            请验证你的 E-Mail 地址！如果你没有收到验证邮件, <a href="{{ route('verification.resend') }}">点击此处重新发送</a>
+          </div>
         </div>
+      </div>
     </div>
-</div>
+  </div>
 @endsection
