@@ -39,6 +39,7 @@ class UpdateCourses implements ShouldQueue
                     $elearning = new Elearning($user->elearning_id, $user->elearning_pwd, Vars::get('current_week') + 1);
                     $logged = $elearning->login();
                     if (!$logged) {
+                        \Log::info('User: ' . $user->id . ' elearning login failed.');
                         $user->save();
                         continue;
                     }
@@ -50,10 +51,10 @@ class UpdateCourses implements ShouldQueue
                     $course->user_id = $user->id;
                     $course->table = json_encode($parsed);
                     $course->save();
-
                     $user->save();
 
                     \Mail::to($user)->queue(new \App\Mail\WeeklyCalender($user));
+                    \Log::info('User: ' . $user->id . ' course table updated.');
 
                     break;
                 } catch (Exception $e) {
