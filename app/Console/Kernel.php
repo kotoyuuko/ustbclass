@@ -24,8 +24,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->job(new \App\Jobs\UpdateCourses)->weekends()->everyFiveMinutes();
-        $schedule->job(new \App\Jobs\UpdateCurrentWeek)->weeklyOn(1, '8:00');
+        $schedule->job(new \App\Jobs\UpdateCourses)->timezone('Asia/Shanghai')->weekends()->everyFiveMinutes();
+        $schedule->job(new \App\Jobs\UpdateCurrentWeek)->timezone('Asia/Shanghai')->weeklyOn(1, '8:00');
     }
 
     /**
