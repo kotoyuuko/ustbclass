@@ -208,7 +208,7 @@ class Elearning
     public function __destruct()
     {
         if ($this->useVPN) {
-            $client->request('GET', $this->url('logout', 'vpn'), [
+            $this->client->request('GET', $this->url('logout', 'vpn'), [
                 'cookies' => $this->cookies,
             ]);
         }
