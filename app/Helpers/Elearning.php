@@ -48,8 +48,8 @@ class Elearning
         $this->pwd = $pwd;
         $this->useVPN = config('ustb.vpn');
 
-        $this->semester = config('ustb.semester');
-        $this->semesterStart = \Carbon\Carbon::createFromFormat('Y-m-d', config('ustb.semstart'))->setTimezone('Asia/Shanghai');
+        $this->semester = vars('semester');
+        $this->semesterStart = \Carbon\Carbon::createFromFormat('Y-m-d', vars('semester_start'))->setTimezone('Asia/Shanghai');
         $this->currentWeek = $week;
 
         $this->guzzleInit();
