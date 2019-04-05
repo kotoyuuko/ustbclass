@@ -9,6 +9,7 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
+        <li class="nav-item"><a class="nav-link" href="{{ route('users.edit', Auth::id()) }}">个人资料</a></li>
       </ul>
 
       <ul class="navbar-nav navbar-right">
@@ -23,7 +24,7 @@
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" id="logout" href="#"
-               onclick="event.preventDefault();document.getElementById('logout-form').submit();">退出登录</a>
+               onclick="event.preventDefault();document.getElementById('logout-form').submit();">退出</a>
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
               {{ csrf_field() }}
             </form>
