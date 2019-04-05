@@ -11,7 +11,7 @@
  * $courseList = $elearning->courseList();
  * $parsed = $elearning->getParsedCourses($courseList);
  *
- * return $elearning->responseWeekCalendar($parsed);
+ * $ics = $elearning->generateWeekCalendar($parsed);
  */
 
 namespace App\Helpers;
@@ -156,7 +156,7 @@ class Elearning
         return $courses;
     }
 
-    public function responseWeekCalendar($courses)
+    public function generateWeekCalendar($courses)
     {
         $week = $this->currentWeek - 1;
         $monday = $this->semesterStart->clone()->add($week, 'weeks');
@@ -187,9 +187,11 @@ class Elearning
             }
         }
 
-        return response($vCalendar->render())
-            ->header('Content-Type', 'text/calendar; charset=utf-8')
-            ->header('Content-Disposition', 'attachment; filename="ustb-coursetable-week-' . $this->currentWeek . '.ics"');
+        // return response($vCalendar->render())
+        //     ->header('Content-Type', 'text/calendar; charset=utf-8')
+        //     ->header('Content-Disposition', 'attachment; filename="ustb-coursetable-week-' . $this->currentWeek . '.ics"');
+
+        return $vCalendar->render();
     }
 
     private function calcTime($time)

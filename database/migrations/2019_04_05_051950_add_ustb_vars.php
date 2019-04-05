@@ -16,6 +16,7 @@ class AddUstbVars extends Migration
         \DB::table('vars')->insert([
             ['key' => 'semester', 'value' => '2018-2019-2'],
             ['key' => 'semester_start', 'value' => '2019-02-25'],
+            ['key' => 'current_week', 'value' => '6'],
         ]);
     }
 
