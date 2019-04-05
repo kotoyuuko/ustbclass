@@ -25,6 +25,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->job(new \App\Jobs\UpdateCourses)->weekends()->everyFiveMinutes();
+        $schedule->job(new \App\Jobs\UpdateCurrentWeek)->weeklyOn(1, '8:00');
     }
 
     /**
