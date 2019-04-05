@@ -31,8 +31,6 @@ class UpdateCourses implements ShouldQueue
 
         if (count($users) > 0) {
             foreach ($users as $user) {
-                \Log::debug('User ID: ' . $user->id);
-
                 $user->coursed_at = Carbon::now();
 
                 try {

@@ -98,12 +98,11 @@ class Elearning
                 'auth_type' => 'local',
                 'username' => config('ustb.usr'),
                 'password' => config('ustb.pwd'),
-                'sms_code' => '',
             ],
         ]);
-        $code = $response->getStatusCode();
+        $body = $response->getBody();
 
-        return $code == '302';
+        return strpos($body, '/logout') !== false;
     }
 
     public function login()
