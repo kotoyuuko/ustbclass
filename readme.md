@@ -21,4 +21,4 @@ USTBClass 是一个使用 Laravel 开发的课程表日历自动推送系统，�
 
 ## License
 
-MIT
+The Unlicense
