@@ -12,9 +12,11 @@
         <li class="nav-item">
           <a class="nav-link" href="{{ route('root') }}">课程表</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{{ route('users.edit', Auth::id()) }}">个人资料</a>
-        </li>
+        @auth
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('users.edit', Auth::id()) }}">个人资料</a>
+          </li>
+        @endauth
       </ul>
 
       <ul class="navbar-nav navbar-right">

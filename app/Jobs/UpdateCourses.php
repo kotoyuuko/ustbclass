@@ -19,14 +19,20 @@ class UpdateCourses implements ShouldQueue
 
     public function handle()
     {
-        $users = User::where('elearning_id', '<>', null)
-            ->where('elearning_pwd', '<>', null)
-            ->where('coursed_at', null)
-            ->where('coursed_at', '<', Carbon::now()->startOfWeek())
-            ->all();
+        $users = User::where([
+            ['elearning_id', '<>', null],
+            ['elearning_pwd', '<>', null],
+            ['coursed_at', '<', Carbon::now()->startOfWeek()]
+        ])->orWhere([
+            ['elearning_id', '<>', null],
+            ['elearning_pwd', '<>', null],
+            ['coursed_at', '=', null]
+        ])->get();
 
         if (count($users) > 0) {
             foreach ($users as $user) {
+                \Log::debug('User ID: ' . $user->id);
+
                 $user->coursed_at = Carbon::now();
 
                 try {
@@ -40,14 +46,14 @@ class UpdateCourses implements ShouldQueue
                     $courseList = $elearning->courseList();
                     $parsed = $elearning->getParsedCourses($courseList);
 
-                    $course = Course::where('user_id', $user->id)->firstOrNew();
+                    $course = Course::findOrNew($user->id);
                     $course->user_id = $user->id;
-                    $course->table = $parsed;
+                    $course->table = json_encode($parsed);
                     $course->save();
 
                     $user->save();
 
-                    Mail::to($user)->queue(new \App\Mail\WeeklyCalender($user));
+                    \Mail::to($user)->queue(new \App\Mail\WeeklyCalender($user));
 
                     break;
                 } catch (Exception $e) {
