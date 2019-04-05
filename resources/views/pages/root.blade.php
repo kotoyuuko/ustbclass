@@ -1,6 +1,6 @@
 @extends('layouts.app')
-@section('title', '首页')
+@section('title', '课程表')
 
 @section('content')
-  <h1>这里是首页</h1>
+  <h1>这里未来会显示一个课程表</h1>
 @stop
