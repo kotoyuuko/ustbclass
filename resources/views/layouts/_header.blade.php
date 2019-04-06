@@ -17,6 +17,9 @@
             <a class="nav-link" href="{{ route('users.edit', Auth::id()) }}">个人资料</a>
           </li>
         @endauth
+        <li class="nav-item">
+          <a class="nav-link" href="{{ route('help') }}">帮助</a>
+        </li>
       </ul>
 
       <ul class="navbar-nav navbar-right">

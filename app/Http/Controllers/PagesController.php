@@ -18,4 +18,9 @@ class PagesController extends Controller
 
         return view('pages.root');
     }
+
+    public function help()
+    {
+        return view('pages.help');
+    }
 }
