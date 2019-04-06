@@ -203,13 +203,4 @@ class Elearning
             'seq' => $time % 6,
         ];
     }
-
-    public function __destruct()
-    {
-        if ($this->useVPN) {
-            $this->client->request('GET', $this->url('logout', 'vpn'), [
-                'cookies' => $this->cookies,
-            ]);
-        }
-    }
 }
