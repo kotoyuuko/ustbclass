@@ -20,10 +20,12 @@ class UpdateCourses implements ShouldQueue
     public function handle()
     {
         $users = User::where([
+            ['email_verified_at', '<>', null],
             ['elearning_id', '<>', null],
             ['elearning_pwd', '<>', null],
             ['coursed_at', '<', Carbon::now()->startOfWeek()]
         ])->orWhere([
+            ['email_verified_at', '<>', null],
             ['elearning_id', '<>', null],
             ['elearning_pwd', '<>', null],
             ['coursed_at', '=', null]
