@@ -30,7 +30,6 @@ class Kernel extends ConsoleKernel
         } else {
             $schedule->job(new \App\Jobs\UpdateCourses)
                 ->timezone('Asia/Shanghai')
-                ->weekdays()
                 ->everyFiveMinutes();
             $schedule->job(new \App\Jobs\SendWeeklyCourseMail)
                 ->timezone('Asia/Shanghai')
