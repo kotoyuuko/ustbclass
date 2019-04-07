@@ -38,6 +38,11 @@ class User extends Authenticatable implements MustVerifyEmail
         'coursed_at' => 'datetime',
     ];
 
+    public function avatar($size)
+    {
+        return 'https://gravatar.loli.net/avatar/' . md5($this->email) . '?s=' . $size;
+    }
+
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new \App\Notifications\ResetPassword($token));
