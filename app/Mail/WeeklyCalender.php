@@ -50,7 +50,7 @@ class WeeklyCalender extends Mailable
             ->with([
                 'name' => $this->user->name,
                 'gentime' => \Carbon\Carbon::now()->toDateTimeString(),
-                'link' => $link ? \str_replace(['http://', 'https://'], 'webcal://', $link) : null,
+                'link' => $link,
             ])
             ->attachData($courseCal->generate(), 'ustb-weekly-course-table-' . $week . '.ics', [
                 'mime' => 'text/calendar',

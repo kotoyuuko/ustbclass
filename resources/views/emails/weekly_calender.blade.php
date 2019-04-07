@@ -5,7 +5,7 @@
 
 @if ($link)
   @component('mail::button', ['url' => $link])
-  导入日历
+  下载日历文件
   @endcomponent
 @endif
 
