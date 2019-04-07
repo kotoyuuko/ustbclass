@@ -24,8 +24,22 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->job(new \App\Jobs\UpdateCourses)->timezone('Asia/Shanghai')->weekends()->everyFiveMinutes();
-        $schedule->job(new \App\Jobs\UpdateCurrentWeek)->timezone('Asia/Shanghai')->weeklyOn(1, '8:00');
+        if (\App::environment('local')) {
+            $schedule->job(new \App\Jobs\UpdateCourses)->everyMinute();
+            $schedule->job(new \App\Jobs\SendWeeklyCourseMail)->everyMinute();
+        } else {
+            $schedule->job(new \App\Jobs\UpdateCourses)
+                ->timezone('Asia/Shanghai')
+                ->weekdays()
+                ->everyFiveMinutes();
+            $schedule->job(new \App\Jobs\SendWeeklyCourseMail)
+                ->timezone('Asia/Shanghai')
+                ->weekends()
+                ->everyFiveMinutes();
+            $schedule->job(new \App\Jobs\UpdateCurrentWeek)
+                ->timezone('Asia/Shanghai')
+                ->weeklyOn(1, '8:00');
+        }
     }
 
     /**

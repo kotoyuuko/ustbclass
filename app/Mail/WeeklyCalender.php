@@ -32,16 +32,17 @@ class WeeklyCalender extends Mailable
      */
     public function build()
     {
+        $week = Vars::get('current_week') + 1;
         $course = Course::where('user_id', $this->user->id)->first();
-        $elearning = new \App\Helpers\Elearning('', '', Vars::get('current_week') + 1);
+        $courseCal = new \App\Helpers\CourseCalender(json_decode($course->table, true), $week);
 
-        return $this->subject('下周课程表')
+        return $this->subject('第 ' . $week . ' 周课程表')
             ->markdown('emails.weekly_calender')
             ->with([
                 'name' => $this->user->name,
-                'gentime' => $course->updated_at->toDateTimeString(),
+                'gentime' => \Carbon\Carbon::now()->toDateTimeString(),
             ])
-            ->attachData($elearning->generateWeekCalendar(json_decode($course->table, true)), 'ustb-weekly-course-table.ics', [
+            ->attachData($courseCal->generate(), 'ustb-weekly-course-table-' . $week . '.ics', [
                 'mime' => 'text/calendar',
             ]);
     }
