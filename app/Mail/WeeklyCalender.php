@@ -36,11 +36,21 @@ class WeeklyCalender extends Mailable
         $course = Course::where('user_id', $this->user->id)->first();
         $courseCal = new \App\Helpers\CourseCalender(json_decode($course->table, true), $week);
 
+        $link = null;
+        if ($this->user->token != null) {
+            $link = route('calendar', [
+                'token' => $this->user->token,
+                'user' => $this->user,
+                'week' => $week,
+            ]);
+        }
+
         return $this->subject('第 ' . $week . ' 周课程表')
             ->markdown('emails.weekly_calender')
             ->with([
                 'name' => $this->user->name,
                 'gentime' => \Carbon\Carbon::now()->toDateTimeString(),
+                'link' => $link ? \str_replace(['http://', 'https://'], 'webcal://', $link) : null,
             ])
             ->attachData($courseCal->generate(), 'ustb-weekly-course-table-' . $week . '.ics', [
                 'mime' => 'text/calendar',

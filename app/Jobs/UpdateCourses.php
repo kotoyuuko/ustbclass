@@ -7,6 +7,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Support\Str;
 use Carbon\Carbon;
 use App\Helpers\Elearning;
 use App\Models\Vars;
@@ -34,6 +35,9 @@ class UpdateCourses implements ShouldQueue
         if (count($users) > 0) {
             foreach ($users as $user) {
                 $user->coursed_at = Carbon::now();
+                if ($user->token == null) {
+                    $user->token = Str::random(16);
+                }
 
                 try {
                     $elearning = new Elearning($user->elearning_id, $user->elearning_pwd, Vars::get('current_week') + 1);
