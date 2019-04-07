@@ -69,6 +69,14 @@
                 </div>
               </div>
 
+              <div class="form-group row">
+                <label for="receive_email" class="col-md-4 col-form-label text-md-right">接收每周邮件</label>
+
+                <div class="col-md-6">
+                  <input id="receive_email" type="checkbox" class="form-control" name="receive_email" value="true"@if ($user->receive_email) checked @endif>
+                </div>
+              </div>
+
               <div class="form-group row mb-0">
                 <div class="col-md-6 offset-md-4">
                   <button type="submit" class="btn btn-primary">

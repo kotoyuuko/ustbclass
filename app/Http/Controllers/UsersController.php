@@ -21,6 +21,12 @@ class UsersController extends Controller
             $data['email_verified_at'] = null;
         }
 
+        if (isset($data['receive_email']) && $data['receive_email'] == 'true') {
+            $data['receive_email'] = true;
+        } else {
+            $data['receive_email'] = false;
+        }
+
         $user->update($data);
 
         return redirect()

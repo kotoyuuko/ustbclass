@@ -22,11 +22,13 @@ class SendWeeklyCourseMail implements ShouldQueue
             ['email_verified_at', '<>', null],
             ['elearning_id', '<>', null],
             ['elearning_pwd', '<>', null],
+            ['receive_email', '=', true],
             ['last_sent_at', '<', Carbon::now()->startOfWeek()]
         ])->orWhere([
             ['email_verified_at', '<>', null],
             ['elearning_id', '<>', null],
             ['elearning_pwd', '<>', null],
+            ['receive_email', '=', true],
             ['last_sent_at', '=', null]
         ])->get();
 
