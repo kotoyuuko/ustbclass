@@ -10655,14 +10655,10 @@ a.text-dark:focus {
   }
 }
 
-/* universal */
-
 body {
   font-family: Hiragino Sans GB, "Hiragino Sans GB", Helvetica, "Microsoft YaHei", Arial, sans-serif;
   font-size: 14px;
 }
-
-/* header */
 
 .navbar-static-top {
   border-color: #e7e7e7;
@@ -10674,15 +10670,12 @@ body {
   margin-top: 0px;
 }
 
-/* Sticky footer styles */
-
 html {
   position: relative;
   min-height: 100%;
 }
 
 body {
-  /* Margin bottom by footer height */
   margin-bottom: 60px;
 }
 
@@ -10690,7 +10683,6 @@ body {
   position: absolute;
   bottom: 0;
   width: 100%;
-  /* Set the fixed height of the footer here */
   height: 60px;
   background-color: #000;
 }
@@ -10707,5 +10699,29 @@ body {
 
 .footer .container p a {
   color: inherit;
+}
+
+.course-card a {
+  text-decoration: none;
+}
+
+.course-card .card-body {
+  padding: 0;
+}
+
+.course-card .card-body .course-table {
+  margin: 0;
+}
+
+.course-card .card-body .course-table td {
+  padding: 1px;
+  height: 100px;
+  vertical-align: middle;
+}
+
+.course-card .card-body .course-table td .course-item {
+  font-size: 0.9em;
+  border: #bdc0ba 1px solid;
+  margin-bottom: -1px;
 }
 

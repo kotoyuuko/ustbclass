@@ -10,7 +10,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <a class="nav-link" href="{{ route('root') }}">课程表</a>
+          <a class="nav-link" href="{{ route('courses', vars('current_week')) }}">课程表</a>
         </li>
         @auth
           <li class="nav-item">

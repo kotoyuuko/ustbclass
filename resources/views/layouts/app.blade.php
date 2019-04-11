@@ -14,7 +14,7 @@
     <div class="container">
       @include('shared._messages')
       @yield('content')
-    </div>
+    </div><br><br>
     @include('layouts._footer')
   </div>
   <script src="{{ mix('js/app.js') }}"></script>

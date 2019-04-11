@@ -10,6 +10,11 @@ class PagesController extends Controller
 {
     public function root()
     {
+        return view('pages.root');
+    }
+
+    public function courses($week = null)
+    {
         $user = \Auth::user();
 
         if (!$user->elearning_id || !$user->elearning_pwd) {
@@ -18,7 +23,31 @@ class PagesController extends Controller
                 ->with('warning', '请先设置学号和教务系统密码！');
         }
 
-        return view('pages.root');
+        if (!$week) {
+            $week = vars('current_week');
+        }
+
+        if ($week < 1 || $week > 16) {
+            return redirect()
+            ->route('root')
+            ->with('danger', '非法请求！');
+        }
+
+        $courses = Course::find($user->id);
+
+        if (!$courses) {
+            return redirect()
+                ->route('root')
+                ->with('info', '您的课程表更新任务正在队列中等待执行，请稍后查看。');
+        }
+
+        $table = courseTable(json_decode($courses->table, true), $week);
+
+        return view('pages.courses', [
+            'table' => $table,
+            'week' => $week,
+            'last_updated_at' => $courses->updated_at,
+        ]);
     }
 
     public function help()
