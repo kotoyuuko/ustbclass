@@ -22,5 +22,6 @@ class Vars extends Model
     {
         $obj = self::where('key', $key)->firstOrFail();
         $obj->value = $value;
+        $obj->save();
     }
 }

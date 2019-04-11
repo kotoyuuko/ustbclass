@@ -7,17 +7,19 @@ function route_class()
 
 function vars($key, $value = false)
 {
+    $cacheKey = 'vars_' . $key;
+
     if ($value) {
         \App\Models\Vars::set($key, $value);
     } else {
-        $cached = cache('vars_' . $key);
+        $cached = cache($cacheKey);
         if ($cached) {
             $value = $cached;
         } else {
             $value = \App\Models\Vars::get($key);
         }
     }
-    cache(['vars_' . $key => $value], now()->addDays(1));
+    cache([$cacheKey => $value], now()->addDays(1));
 
     return $value;
 }

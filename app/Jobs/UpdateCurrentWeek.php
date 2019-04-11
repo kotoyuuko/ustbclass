@@ -16,6 +16,6 @@ class UpdateCurrentWeek implements ShouldQueue
     public function handle()
     {
         $dbWeek = Vars::get('current_week');
-        Vars::set('current_week', $dbWeek + 1);
+        vars('current_week', $dbWeek + 1);
     }
 }
