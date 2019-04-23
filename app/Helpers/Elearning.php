@@ -51,7 +51,7 @@ class Elearning
         $this->cookies = new \GuzzleHttp\Cookie\CookieJar;
         $this->client = new \GuzzleHttp\Client([
             'base_uri' => $this->useVPN ? self::VPN_URL : self::ELEARNING_URL,
-            'timeout' => 5.0,
+            'timeout' => 30.0,
         ]);
     }
 
