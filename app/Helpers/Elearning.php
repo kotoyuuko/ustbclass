@@ -52,6 +52,7 @@ class Elearning
         $this->client = new \GuzzleHttp\Client([
             'base_uri' => $this->useVPN ? self::VPN_URL : self::ELEARNING_URL,
             'timeout' => 30.0,
+            'verify' => \Composer\CaBundle\CaBundle::getSystemCaRootBundlePath(),
         ]);
     }
 
