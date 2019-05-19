@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use PHPUnit\Framework\Constraint\Exception;
 
 class Kernel extends ConsoleKernel
 {
@@ -28,16 +29,22 @@ class Kernel extends ConsoleKernel
             $schedule->job(new \App\Jobs\UpdateCourses)->everyMinute();
             $schedule->job(new \App\Jobs\SendWeeklyCourseMail)->everyMinute();
         } else {
-            $schedule->job(new \App\Jobs\UpdateCourses)
+            $schedule->job(new \App\Jobs\UpdateCurrentWeek)
                 ->timezone('Asia/Shanghai')
-                ->everyFiveMinutes();
+                ->weeklyOn(1, '8:00');
+
+            try {
+                $schedule->job(new \App\Jobs\UpdateCourses)
+                    ->timezone('Asia/Shanghai')
+                    ->everyFiveMinutes();
+            } catch (\Exception $e) {
+                \Log::error($e->getMessage());
+            }
+
             $schedule->job(new \App\Jobs\SendWeeklyCourseMail)
                 ->timezone('Asia/Shanghai')
                 ->weekends()
                 ->everyFiveMinutes();
-            $schedule->job(new \App\Jobs\UpdateCurrentWeek)
-                ->timezone('Asia/Shanghai')
-                ->weeklyOn(1, '8:00');
         }
     }
 
@@ -48,7 +55,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }
