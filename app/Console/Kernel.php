@@ -33,18 +33,15 @@ class Kernel extends ConsoleKernel
                 ->timezone('Asia/Shanghai')
                 ->weeklyOn(1, '8:00');
 
-            try {
-                $schedule->job(new \App\Jobs\UpdateCourses)
-                    ->timezone('Asia/Shanghai')
-                    ->everyFiveMinutes();
-            } catch (\Exception $e) {
-                \Log::error($e->getMessage());
-            }
+            $schedule->job(new \App\Jobs\UpdateCourses)
+                ->timezone('Asia/Shanghai')
+                ->everyFiveMinutes();
 
             $schedule->job(new \App\Jobs\SendWeeklyCourseMail)
                 ->timezone('Asia/Shanghai')
                 ->weekends()
-                ->everyFiveMinutes();
+                ->everyFiveMinutes()
+                ->runInBackground();
         }
     }
 
