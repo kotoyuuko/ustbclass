@@ -18,8 +18,8 @@ namespace App\Helpers;
 
 class Elearning
 {
-    const VPN_URL = 'http://n.ustb.edu.cn/';
-    const ELEARNING_VPN = 'http/elearning.ustb.edu.cn/choose_courses/';
+    const VPN_URL = 'https://n.ustb.edu.cn/';
+    const ELEARNING_VPN = 'http/77726476706e69737468656265737421f5fb449d353e615e79469cbf8c576d30dd14c5990b/choose_courses/';
     const ELEARNING_URL = 'http://elearning.ustb.edu.cn/choose_courses/';
 
     private $usr;
