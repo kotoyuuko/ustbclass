@@ -2,17 +2,17 @@
 
 namespace App\Jobs;
 
+use App\Helpers\Elearning;
+use App\Models\Course;
+use App\Models\User;
+use App\Models\Vars;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Str;
-use Carbon\Carbon;
-use App\Helpers\Elearning;
-use App\Models\Vars;
-use App\Models\User;
-use App\Models\Course;
 
 class UpdateCourses implements ShouldQueue
 {
@@ -24,12 +24,12 @@ class UpdateCourses implements ShouldQueue
             ['email_verified_at', '<>', null],
             ['elearning_id', '<>', null],
             ['elearning_pwd', '<>', null],
-            ['coursed_at', '<', Carbon::now()->startOfWeek()]
+            ['coursed_at', '<', Carbon::now()->startOfWeek()],
         ])->orWhere([
             ['email_verified_at', '<>', null],
             ['elearning_id', '<>', null],
             ['elearning_pwd', '<>', null],
-            ['coursed_at', '=', null]
+            ['coursed_at', '=', null],
         ])->get();
 
         if (count($users) > 0) {

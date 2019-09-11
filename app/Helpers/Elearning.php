@@ -1,27 +1,12 @@
 <?php
 
-/**
- * Usage
- *
- * $elearning = new \App\Helpers\Elearning('学号', '密码', 周数);
- * $res = $elearning->login();
- * if (!$res) {
- *     return 'F';
- * }
- * $courseList = $elearning->courseList();
- * $parsed = $elearning->getParsedCourses($courseList);
- *
- * $ics = $elearning->generateWeekCalendar($parsed);
- */
-
 namespace App\Helpers;
+
+define('VPN_URL', 'https://n.ustb.edu.cn/');
+define('ELEARNING_DOMAIN', 'elearning.ustb.edu.cn');
 
 class Elearning
 {
-    const VPN_URL = 'https://n.ustb.edu.cn/';
-    const ELEARNING_VPN = 'http/77726476706e69737468656265737421f5fb449d353e615e79469cbf8c576d30dd14c5990b/choose_courses/';
-    const ELEARNING_URL = 'http://elearning.ustb.edu.cn/choose_courses/';
-
     private $usr;
     private $pwd;
 
@@ -32,6 +17,7 @@ class Elearning
     protected $useVPN;
     protected $client;
     protected $cookies;
+    protected $accessPoint;
 
     public function __construct($usr, $pwd, $week)
     {
@@ -43,6 +29,12 @@ class Elearning
         $this->semesterStart = \Carbon\Carbon::createFromFormat('Y-m-d', vars('semester_start'))->setTimezone('Asia/Shanghai');
         $this->currentWeek = $week;
 
+        $this->accessPoint = 'http://' . ELEARNING_DOMAIN . '/choose_courses/';
+        if ($this->useVPN) {
+            $vpn = new FxxkWengineVPN();
+            $this->accessPoint = VPN_URL . 'http/' . $vpn->encryptUrl(ELEARNING_DOMAIN) . '/choose_courses/';
+        }
+
         $this->guzzleInit();
     }
 
@@ -50,26 +42,17 @@ class Elearning
     {
         $this->cookies = new \GuzzleHttp\Cookie\CookieJar;
         $this->client = new \GuzzleHttp\Client([
-            'base_uri' => $this->useVPN ? self::VPN_URL : self::ELEARNING_URL,
+            'base_uri' => $this->accessPoint,
             'timeout' => 30.0,
             'verify' => \Composer\CaBundle\CaBundle::getSystemCaRootBundlePath(),
         ]);
-    }
-
-    private function url($url, $type = 'elearning')
-    {
-        if ($type == 'elearning' && $this->useVPN) {
-            $url = self::ELEARNING_VPN . $url;
-        }
-
-        return $url;
     }
 
     private function parseCourse($course)
     {
         $info = [
             'name' => $course['KCM'],
-            'location' => []
+            'location' => [],
         ];
 
         foreach ($course['SKSJDD'] as $time => $location) {
@@ -84,28 +67,36 @@ class Elearning
 
     public function vpnLogin()
     {
-        $response = $this->client->request('POST', $this->url('do-login', 'vpn'), [
+        $this->client->request('GET', VPN_URL, [
             'cookies' => $this->cookies,
-            'query' => [
-                'auth_type' => 'local',
-                'username' => config('ustb.usr'),
-                'password' => config('ustb.pwd'),
-            ],
+        ]);
+
+        $this->cookies->setCookie(new \GuzzleHttp\Cookie\SetCookie([
+            'Domain' => 'n.ustb.edu.cn',
+            'Name' => 'remember_token',
+            'Value' => config('ustb.token'),
+            'Discard' => false,
+        ]));
+
+        $response = $this->client->request('GET', VPN_URL, [
+            'cookies' => $this->cookies,
         ]);
         $body = $response->getBody();
+        $success = strpos($body, '/logout') !== false;
 
-        return strpos($body, '/logout') !== false;
+        return $success;
     }
 
     public function login()
     {
         if ($this->useVPN && !$this->vpnLogin()) {
+            \Log::info('vpn login failed.');
             return false;
         }
 
-        $response = $this->client->request('POST', $this->url('j_spring_security_check'), [
+        $response = $this->client->request('POST', 'j_spring_security_check', [
             'cookies' => $this->cookies,
-            'query' => [
+            'form_params' => [
                 'j_username' => $this->usr,
                 'j_password' => $this->pwd,
             ],
@@ -117,9 +108,9 @@ class Elearning
 
     public function courseList()
     {
-        $response = $this->client->request('POST', $this->url('choosecourse/commonChooseCourse_courseList_loadTermCourses.action'), [
+        $response = $this->client->request('POST', 'choosecourse/commonChooseCourse_courseList_loadTermCourses.action', [
             'cookies' => $this->cookies,
-            'query' => [
+            'form_params' => [
                 'listXnxq' => $this->semester,
                 'uid' => $this->usr,
             ],

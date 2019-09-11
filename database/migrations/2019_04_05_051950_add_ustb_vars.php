@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class AddUstbVars extends Migration
@@ -14,9 +12,9 @@ class AddUstbVars extends Migration
     public function up()
     {
         \DB::table('vars')->insert([
-            ['key' => 'semester', 'value' => '2018-2019-2'],
-            ['key' => 'semester_start', 'value' => '2019-02-25'],
-            ['key' => 'current_week', 'value' => '6'],
+            ['key' => 'semester', 'value' => '2019-2020-1'],
+            ['key' => 'semester_start', 'value' => '2019-09-09'],
+            ['key' => 'current_week', 'value' => '1'],
         ]);
     }
 
