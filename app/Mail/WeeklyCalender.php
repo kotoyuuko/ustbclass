@@ -2,27 +2,28 @@
 
 namespace App\Mail;
 
+use App\Models\Course;
+use App\Models\Vars;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use App\Models\Course;
-use App\Models\Vars;
 
 class WeeklyCalender extends Mailable
 {
     use Queueable, SerializesModels;
 
     protected $user;
+    protected $week;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($user)
+    public function __construct($user, $week = null)
     {
         $this->user = $user;
+        $this->week = $week !== null ? $week : Vars::get('current_week') + 1;
     }
 
     /**
@@ -32,7 +33,7 @@ class WeeklyCalender extends Mailable
      */
     public function build()
     {
-        $week = Vars::get('current_week') + 1;
+        $week = $this->week;
         $course = Course::where('user_id', $this->user->id)->first();
         $courseCal = new \App\Helpers\CourseCalender(json_decode($course->table, true), $week);
 
