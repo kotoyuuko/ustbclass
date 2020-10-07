@@ -1,5 +1,7 @@
 # USTB Class
 
+因已经毕业，弃坑。
+
 ## Intro
 
 USTBClass 是一个使用 Laravel 开发的课程表日历自动推送系统，北京科技大学专用。
